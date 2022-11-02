@@ -1,0 +1,67 @@
+﻿@model Aluno
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 style="text-align: center">Atualizar Aluno</h1>
+<hr/>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+
+        @Html.HiddenFor(model => model.Matricula)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Matricula, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.Matricula, new { htmlAttributes = new { @readonly="readonly" , @class = "form-control" } })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", placeholder = "Nome do aluno" } })
+            @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sexo, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.DropDownListFor(model => model.Sexo, (IEnumerable<SelectListItem>)ViewBag.Sex, htmlAttributes: new { @class = "form-control" } )
+            @Html.ValidationMessageFor(model => model.Sexo, "", new {@class = "text-danger"})
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nascimento, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.Nascimento, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Nascimento, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CPF, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.CPF, new { htmlAttributes = new { @class = "form-control" , placeholder = "(Opcional) Apenas dígitos", onkeyup = "formataCPF(this)", data_tipo = "cpf", @maxlength = "11"} })
+            @Html.ValidationMessageFor(model => model.CPF, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" class="btn btn-danger" value="Cancelar" onclick="location.href='@Url.Action("Index", "Aluno")'" />
+            <input type="submit" value="Atualizar" class="btn btn-dark"/>
+        </div>
+    </div>
+}
+
+<script>
+    function formataCPF(cpf) {
+        const elementoAlvo = cpf
+        const cpfAtual = cpf.value   
+
+        let cpfAtualizado;
+
+        cpfAtualizado = cpfAtual.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, 
+        function( regex, argumento1, argumento2, argumento3, argumento4 ) {
+                return argumento1 + '.' + argumento2 + '.' + argumento3 + '-' + argumento4; })  
+        elementoAlvo.value = cpfAtualizado;
+    }
+</script>
